@@ -1,12 +1,12 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field
 from transformers import pipeline
-import pinggy
 
 app = FastAPI(title="AI Model API", version="0.0")
+MODEL = "j-hartmann/emotion-english-distilroberta-base"
 
 try:
-    model = pipeline("sentiment-analysis", model="distilbert/distilbert-base-uncased-finetuned-sst-2-english")
+    model = pipeline("text-classification", model=MODEL, top_k=2)
 except Exception as e:
     print(str(e))
     model = None
@@ -19,7 +19,8 @@ def read_root():
     """Get an introduction about the API"""
     return {
         "message": "Welcome to the text sentiment analysis API",
-        "model": "distilbert-base-uncased-finetuned-sst-2-english",
+        "model": MODEL,
+        "emotions_supported": ["anger", "disgust", "fear", "joy", "sadness", "surprise", "neutral"],
         "usage": "Send POST request to /predict with body: {'text': 'content'}"
     }
 
@@ -40,7 +41,7 @@ def predict(payload:TextRequest):
         results = model(payload.text)
         return {
             "input_text": payload.text,
-            "predictions": results
+            "emotion": results[0]
         }
     
     except Exception as e:

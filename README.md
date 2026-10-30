@@ -14,14 +14,14 @@ This project builds a Web API service based on **FastAPI** and an AI model from 
 ## AI Model Information
 * **Chosen model:** `distilbert-base-uncased-finetuned-sst-2-english`
 * **Task:** Sentiment Analysis / Text Classification
-* **Link Hugging Face:** [distilbert/distilbert-base-uncased-finetuned-sst-2-english](https://huggingface.co/distilbert/distilbert-base-uncased-finetuned-sst-2-english)
+* **Link Hugging Face:** [j-hartmann/emotion-english-distilroberta-base](https://huggingface.co/j-hartmann/emotion-english-distilroberta-base)
 
 ---
 
 ## System Description
 The system functions as a Web API service that analyzes the sentiment of English sentences.
 * It accepts text (a `string`) as input.
-* Use the `DistilBERT` model to predict a sentiment label (`POSITIVE` or `NEGATIVE`) along with a confidence score.
+* Use the `j-hartmann` model to predict a sentiment label (`anger`, `disgust`, `fear`, `joy`, `sadness`, `surprise`, `neutral`) along with a confidence score from 0 to 1 using Top-k retrieval.
 * Exception handling and automated input validation using `Pydantic`.
 
 ---
@@ -96,7 +96,8 @@ Open a new terminal and run this command:
    ```JSON
    {
   "message": "Welcome to the text sentiment analysis API!",
-  "model": "distilbert-base-uncased-finetuned-sst-2-english",
+  "model": "j-hartmann/emotion-english-distilroberta-base",
+  "emotions_supported": ["anger", "disgust", "fear", "joy", "sadness", "surprise", "neutral"],
   "usage": "Send POST request to /predict with body: {'text': 'content'}"
    }
    ```
@@ -122,23 +123,47 @@ Open a new terminal and run this command:
 
    ```JSON
    {
-   "text": "I absolutely love learning FastAPI and AI!"
+  "text": "I am so thrilled and happy that we completed this project successfully!"
    }
    ```
 
 - Example response (success 200):
 
-    ```JSON
-    {
-    "input_text": "I absolutely love learning FastAPI and AI!",
-    "predictions": [
-        {
-        "label": "POSITIVE",
-        "score": 0.9998656511306763
-        }
-    ]
-    }
-    ```
+   ```JSON
+   {
+   "input_text": "I am so thrilled and happy that we completed this project successfully!",
+   "emotions": [
+      {
+         "label": "joy",
+         "score": 0.9542
+      },
+      {
+         "label": "surprise",
+         "score": 0.0231
+      },
+      {
+         "label": "neutral",
+         "score": 0.0120
+      },
+      {
+         "label": "sadness",
+         "score": 0.0045
+      },
+      {
+         "label": "disgust",
+         "score": 0.0021
+      },
+      {
+         "label": "fear",
+         "score": 0.0021
+      },
+      {
+         "label": "anger",
+         "score": 0.0020
+      }
+   ]
+   }
+   ```
 
 - Example response (Error/Invalid input 422):
     ```JSON
@@ -184,11 +209,15 @@ If you do not want to open a browser, you can type `curl` commands directly into
    ```bash
    curl -X POST "http://127.0.0.1:8000/predict" \
    -H "Content-Type: application/json" \
-   -d '{"text": "I am so excited to learn about APIs!"}'
+   -d '{"text": "INPUT HERE"}'
    ```
 
    Command for Command Prompt:
 
    ```bash
-   curl -X POST "http://127.0.0.1:8000/predict" -H "Content-Type: application/json" -d "{\"text\": \"I am so excited to learn about APIs!\"}"
+   curl -X POST "http://127.0.0.1:8000/predict" -H "Content-Type: application/json" -d "{\"text\": \"INPUT HERE\"}"
    ```
+
+- If tunnel.py is running, you can replace the url `http://127.0.0.1:8000` with the public url(s) provided from the terminal of it.
+
+- NOTE: On your first http request, the system will have to download the AI model cache into your hard disk so the command won't work on the first time. Keep waiting until the terminal of main.py notifies that the AI model is downloaded then you can use the API freely.
