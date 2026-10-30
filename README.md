@@ -12,7 +12,7 @@ This project builds a Web API service based on **FastAPI** and an AI model from 
 ---
 
 ## AI Model Information
-* **Chosen model:** `distilbert-base-uncased-finetuned-sst-2-english`
+* **Chosen model:** `j-hartmann/emotion-english-distilroberta-base`
 * **Task:** Sentiment Analysis / Text Classification
 * **Link Hugging Face:** [j-hartmann/emotion-english-distilroberta-base](https://huggingface.co/j-hartmann/emotion-english-distilroberta-base)
 
