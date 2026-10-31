@@ -1,6 +1,6 @@
 # Lab 2: Application Programming Interface (API) - Computational Thinking
 
-This project builds a Web API service based on **FastAPI** and an AI model from **Hugging Face** for the Lab 2 practical assignment in the Computational Thinking course. (Computational Thinking).
+This project builds a Web API service based on **FastAPI** and an AI model from **Hugging Face** for the Lab 2 practical assignment in the Computational Thinking course.
 
 ---
 
@@ -23,6 +23,13 @@ The system functions as a Web API service that analyzes the sentiment of English
 * It accepts text (a `string`) as input.
 * Use the `j-hartmann` model to predict a sentiment label (`anger`, `disgust`, `fear`, `joy`, `sadness`, `surprise`, `neutral`) along with a confidence score from 0 to 1 using Top-k retrieval.
 * Exception handling and automated input validation using `Pydantic`.
+
+---
+
+## Video link
+* **Google Drive link:** [Google Drive video](https://drive.google.com/file/d/1WQF3dcOflowtcTkPJLCHvrNr1nmBfnho/view?usp=sharing)
+* **Youtube link:** [Youtube video](https://youtu.be/_-4V7zKssIE?si=fhb-dhBqmUjcB5lS)
+* **Complaint:** If you cannot access the video, please send a complaint via email `2512711614@student.hcmus.edu.vn`
 
 ---
 
@@ -212,7 +219,7 @@ If you do not want to open a browser, you can type `curl` commands directly into
    -d '{"text": "INPUT HERE"}'
    ```
 
-   Command for Command Prompt:
+   Command for Windows Command Prompt:
 
    ```bash
    curl -X POST "http://127.0.0.1:8000/predict" -H "Content-Type: application/json" -d "{\"text\": \"INPUT HERE\"}"
